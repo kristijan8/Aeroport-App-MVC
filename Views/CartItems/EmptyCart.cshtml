@@ -1,0 +1,9 @@
+﻿@model AirportApplication.Models.CompanyFlight
+
+<h1>Are you sure you want to clear the whole cart?</h1>
+
+<form asp-action="EmptyCart">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <a asp-action="Index">Back to List</a>
+</form>

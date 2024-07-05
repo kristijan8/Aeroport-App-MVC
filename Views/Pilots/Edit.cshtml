@@ -1,0 +1,71 @@
+﻿@model AirportApplication.ViewModels.AddOrEditPilot
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Pilot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Pilot.Id" />
+            <div class="form-group">
+                <label asp-for="Pilot.FirstName" class="control-label"></label>
+                <input asp-for="Pilot.FirstName" class="form-control" />
+                <span asp-validation-for="Pilot.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pilot.LastName" class="control-label"></label>
+                <input asp-for="Pilot.LastName" class="form-control" />
+                <span asp-validation-for="Pilot.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pilot.Rank" class="control-label"></label>
+                <input asp-for="Pilot.Rank" class="form-control" />
+                <span asp-validation-for="Pilot.Rank" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pilot.DateOfBirth" class="control-label"></label>
+                <input asp-for="Pilot.DateOfBirth" class="form-control" />
+                <span asp-validation-for="Pilot.DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pilot.Nationality" class="control-label"></label>
+                <input asp-for="Pilot.Nationality" class="form-control" />
+                <span asp-validation-for="Pilot.Nationality" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Pilot.ProfilePicture" class="control-label"></label>
+                <input asp-for="ProfilePictureName" class="form-control" readonly="@(true)"/>
+                <span asp-validation-for="Pilot.ProfilePicture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfilePictureFile" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="ProfilePictureFile" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pilot.CompanyId" class="control-label"></label>
+                <select asp-for="Pilot.CompanyId" class="form-control" asp-items="ViewBag.CompanyId"></select>
+                <span asp-validation-for="Pilot.CompanyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

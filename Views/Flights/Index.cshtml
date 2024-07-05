@@ -1,0 +1,73 @@
+﻿@model AirportApplication.ViewModels.FlightFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Destinations</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<form asp-controller="Flights" asp-action="Index" method="get">
+    <p>
+        Origin:
+        <select asp-for="Origin" asp-items="Model.Origins">
+            <option value="">All</option>
+        </select>
+        Destination:
+        <select asp-for="Destination" asp-items="Model.Destinations">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights[0].Origin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights[0].Destination)
+            </th>
+            <th>
+                View Flights
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Flights) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Origin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination)
+            </td>
+            <td>
+               <a asp-controller="CompanyFlights" asp-action="FlightsByDestination" asp-route-id="@item.Id">View Flights</a>
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @Html.Raw("|");
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    @Html.Raw("|");
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

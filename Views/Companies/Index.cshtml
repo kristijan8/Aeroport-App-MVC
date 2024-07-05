@@ -1,0 +1,89 @@
+﻿@model AirportApplication.ViewModels.CompanyFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Companies</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<form asp-controller="Companies" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" asp-for="Title" />
+        Country:
+        <select asp-for="Country" asp-items="Model.Countries">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table" style="border-color=black">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Logo)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Companies[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Companies[0].Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Companies[0].NumberOfAirplanes)
+            </th>
+            <th>
+                View Pilots
+            </th>
+            <th>
+                View Flights
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Companies) {
+        <tr>
+            <td width=20%> 
+                <img src="~/logos/@item.Logo"
+                width=100% height=100% position=absolute/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfAirplanes)
+            </td>
+            <td>
+               <a asp-controller="Pilots" asp-action="PilotsByCompany" asp-route-id="@item.Id">View Pilots</a>
+            </td>
+            <td>
+               <a asp-controller="CompanyFlights" asp-action="FlightsByCompany" asp-route-id="@item.Id">View Flights</a>
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @Html.Raw("|");
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    @Html.Raw("|");
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

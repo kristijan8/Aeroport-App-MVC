@@ -1,0 +1,99 @@
+﻿@model AirportApplication.ViewModels.CompanyFlightFilter
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Flights from "@ViewBag.MessageOrigin" to "@ViewBag.MessageDestination"</h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<form asp-controller="CompanyFlights" asp-action="FlightsByDestination" method="get">
+    <p>
+        Company name: <input type="text" asp-for="Title" />
+        Sort by price:
+        <select asp-for="Sort" asp-items="Model.SortTypes">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].Companies)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].Flight.Origin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].Flight.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].getDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].getTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyFlights[0].Duration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CompanyFlights) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Companies.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flight.Origin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flight.Destination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)$
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.getDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.getTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @Html.Raw("|");
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    @Html.Raw("|");
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                {
+                    @Html.Raw("|");
+                    <a asp-action="BookFlight" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Book flight</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
